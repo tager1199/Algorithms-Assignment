@@ -13,10 +13,8 @@ namespace ConsoleApplication1
     {
       string Data = DataSelection();
       double[] Unsorted = LoadData(Data);
-      double[] Sorted = BubbleSort(Unsorted);
-      foreach(double i in Sorted){
-        Console.WriteLine(i);
-      }
+      double[] Sorted = BubbleSort(Unsorted, Unsorted.Length);
+      InsertionSort(Unsorted, Unsorted.Length);
     }
 
     static string DataSelection()
@@ -77,23 +75,51 @@ namespace ConsoleApplication1
         return Numbers;
       }
 
-      static double[] BubbleSort(double[] Unsorted)
+      static double[] BubbleSort(double[] Unsorted, int Len)
         {
           double temp = 0;
-          int TimeCount = 0;
-          for (int i = 0; i < Unsorted.Length; i++) {
-              for (int j = 0; j < Unsorted.Length - 1; j++) {
-                  TimeCount+=1;
+          int Count = 0;
+          for (int i = 0; i < Len; i++) {
+              for (int j = 0; j < Len - 1; j++) {
+                  Count++;
                   if (Unsorted[j] > Unsorted[j + 1]) {
+                      Count++;
                       temp = Unsorted[j + 1];
                       Unsorted[j + 1] = Unsorted[j];
                       Unsorted[j] = temp;
                   }
               }
           }
-            Console.WriteLine("The time complexity for this algorim is {0}",TimeCount);
+            PrintArray(Unsorted);
+            Console.WriteLine("The number of steps for the bubble sort was {0}",Count);
             return Unsorted;
         }
 
+        static void InsertionSort(double[] Unsorted, int Len)
+          {
+            int Count = 0;
+            for (int i = 0; i < Len - 1; i++)
+            {
+                for (int j = i + 1; j > 0; j--)
+                {
+                    Count++;
+                    if (Unsorted[j - 1] > Unsorted[j])
+                    {
+                        Count++;
+                        double temp = Unsorted[j - 1];
+                        Unsorted[j - 1] = Unsorted[j];
+                        Unsorted[j] = temp;
+                    }
+                }
+            }
+              Console.WriteLine("The number of steps for the insertion sort was {0}",Count);
+          }
+
+      static void PrintArray(double[] Array)
+        {
+          foreach(double i in Array){
+            Console.WriteLine(i);
+          }
+        }
   }
 }
