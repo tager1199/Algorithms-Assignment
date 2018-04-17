@@ -15,6 +15,8 @@ namespace ConsoleApplication1
       double[] Unsorted = LoadData(Data);
       double[] Sorted = BubbleSort(Unsorted, Unsorted.Length);
       InsertionSort(Unsorted, Unsorted.Length);
+      QuickSort(Unsorted, Unsorted.Length);
+      HeapSort(Unsorted, Unsorted.Length);
     }
 
     static string DataSelection()
@@ -114,6 +116,20 @@ namespace ConsoleApplication1
             }
               Console.WriteLine("The number of steps for the insertion sort was {0}",Count);
           }
+
+          static void QuickSort(double[] Unsorted, int Len)
+            {
+              int Count = 0;
+
+            }
+
+
+            static void HeapSort(double[] Unsorted, int Len)
+              {
+                int Count = 0;
+
+              }
+
 
       static void PrintArray(double[] Array)
         {
