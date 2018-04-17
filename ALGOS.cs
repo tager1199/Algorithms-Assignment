@@ -76,7 +76,32 @@ namespace ConsoleApplication1
 
       static double[] BubbleSort(double[] Unsorted)
         {
-            double[] Sorted = new double[Unsorted.Length];
+
+          Len = Unsorted.Length;
+          double[] Sorted = new double[Unsorted.Length];
+          double temp = 0;
+
+
+          for (int i = 0; i < Len-1; i++){
+            bool swapped = false;
+
+            for (int j = 0; j < Len-1; i++){
+                /* compare the adjacent elements */
+                if (list[j] > list[j+1]) {
+                  /* swap them */
+                  swapped = true;
+                  temp = list[j];
+                  list[j] = list[j+1];
+                  list[j+1] = temp;
+                }
+               /*if no number was swapped that means
+               array is sorted now, break the loop.*/
+
+               if(swapped == false){
+                 break
+                 }
+               }
+            }
             return Sorted;
         }
 
