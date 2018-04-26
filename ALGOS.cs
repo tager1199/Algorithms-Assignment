@@ -10,7 +10,8 @@ namespace ConsoleApplication1
 
   static class Assign
   {
-    public static int QuickCount = 0;
+    public static int QuickCount;
+    public static int HeapCount;
   }
 
   class Program
@@ -24,6 +25,7 @@ namespace ConsoleApplication1
       QuickSort(Unsorted, 0, Unsorted.Length-1);
       Console.WriteLine("The number of steps for the quick sort was {0}",Assign.QuickCount);
       HeapSort(Unsorted, Unsorted.Length);
+      Console.WriteLine("The number of steps for the heap sort was {0}",Assign.HeapCount);
     }
 
     static string DataSelection()
@@ -167,10 +169,49 @@ namespace ConsoleApplication1
               }
           }
 
-            static void HeapSort(double[] Unsorted, int Len)
+          static void HeapSort(double[] Unsorted, int heapSize)
+            {
+              for (int p = (heapSize - 1) / 2; p >= 0; p--)
               {
-
+                MaxHeapify(Unsorted, heapSize, p);
               }
+
+              for (int i = Unsorted.Length - 1; i > 0; i--)
+              {
+                  //Swap
+                  double temp = Unsorted[i];
+                  Unsorted[i] = Unsorted[0];
+                  Unsorted[0] = temp;
+                  Assign.HeapCount++;
+                  heapSize--;
+                  MaxHeapify(Unsorted, heapSize, 0);
+              }
+            }
+
+          private static void MaxHeapify(double[] input, int heapSize, int index)
+          {
+              int left = (index + 1) * 2 - 1;
+              int right = (index + 1) * 2;
+              int largest = 0;
+
+              if (left < heapSize && input[left] > input[index])
+                  largest = left;
+              else
+                  largest = index;
+
+              if (right < heapSize && input[right] > input[largest])
+                  largest = right;
+
+              if (largest != index)
+              {
+                  double temp = input[index];
+                  input[index] = input[largest];
+                  input[largest] = temp;
+                  Assign.HeapCount++;
+                  MaxHeapify(input, heapSize, largest);
+              }
+          }
+
 
 
       static void PrintArray(double[] Array)
