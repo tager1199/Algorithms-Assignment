@@ -7,6 +7,12 @@ using System.IO;
 
 namespace ConsoleApplication1
 {
+
+  static class Assign
+  {
+    public static int QuickCount = 0;
+  }
+
   class Program
   {
     static void Main(string[] args)
@@ -15,7 +21,8 @@ namespace ConsoleApplication1
       double[] Unsorted = LoadData(Data);
       double[] Sorted = BubbleSort(Unsorted, Unsorted.Length);
       InsertionSort(Unsorted, Unsorted.Length);
-      QuickSort(Unsorted, Unsorted.Length);
+      QuickSort(Unsorted, 0, Unsorted.Length-1);
+      Console.WriteLine("The number of steps for the quick sort was {0}",Assign.QuickCount);
       HeapSort(Unsorted, Unsorted.Length);
     }
 
@@ -117,16 +124,51 @@ namespace ConsoleApplication1
               Console.WriteLine("The number of steps for the insertion sort was {0}",Count);
           }
 
-          static void QuickSort(double[] Unsorted, int Len)
+          static void QuickSort(double[] Unsorted, int left, int right)
             {
-              int Count = 0;
+              int i = left, j = right;
+              double pivot = Unsorted[(left + right) / 2];
 
-            }
+              while (i <= j)
+              {
+                  while (Unsorted[i].CompareTo(pivot) < 0)
+                  {
+                      i++;
+                      Assign.QuickCount++;
+                  }
 
+                  while (Unsorted[j].CompareTo(pivot) > 0)
+                  {
+                      j--;
+                      Assign.QuickCount++;
+                  }
+
+                  if (i <= j)
+                  {
+                      // Swap
+                      double tmp = Unsorted[i];
+                      Unsorted[i] = Unsorted[j];
+                      Unsorted[j] = tmp;
+                      Assign.QuickCount++;
+                      i++;
+                      j--;
+                  }
+              }
+
+              // Recursive calls
+              if (left < j)
+              {
+                  QuickSort(Unsorted, left, j);
+              }
+
+              if (i < right)
+              {
+                  QuickSort(Unsorted, i, right);
+              }
+          }
 
             static void HeapSort(double[] Unsorted, int Len)
               {
-                int Count = 0;
 
               }
 
