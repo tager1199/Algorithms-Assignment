@@ -80,16 +80,6 @@ namespace ConsoleApplication1
       return Options[Selection -1];
     }
 
-    static double[] Reverse(double[] sorted, int Len){
-      double[] reversed = new double[Len];
-      int j = 0;
-      for(int i = Len-1; i > -1; i--){
-        reversed[j] = sorted[i];
-      }
-      PrintArray(reversed);
-      return reversed;
-    }
-
     static double[] LoadData(string Name)
       {
         //@"D:\\Documents\\algos\\Algorithms-Assignment\\"+Name+".txt"
@@ -226,11 +216,19 @@ namespace ConsoleApplication1
 
 
 
-      static void PrintArray(double[] Array)
-        {
-          foreach(double i in Array){
-            Console.WriteLine(i);
-          }
-        }
+          static void PrintArray(double[] Array)
+            {
+              foreach(double i in Array){
+                Console.WriteLine(i);
+              }
+            }
+
+            static void PrintArrayReversed(double[] Array)
+              {
+                foreach(double i in Array){
+                  Console.WriteLine(i);
+                }
+              }
+
   }
 }
