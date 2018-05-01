@@ -26,6 +26,7 @@ namespace ConsoleApplication1
       Console.WriteLine("The number of steps for the quick sort was {0}",Assign.QuickCount);
       HeapSort(Unsorted, Unsorted.Length);
       Console.WriteLine("The number of steps for the heap sort was {0}",Assign.HeapCount);
+      double[] Decending = Reverse(Sorted, Sorted.Length);
     }
 
     static string DataSelection()
@@ -79,9 +80,20 @@ namespace ConsoleApplication1
       return Options[Selection -1];
     }
 
+    static double[] Reverse(double[] sorted, int Len){
+      double[] reversed = new double[Len];
+      int j = 0;
+      for(int i = Len-1; i > -1; i--){
+        reversed[j] = sorted[i];
+      }
+      PrintArray(reversed);
+      return reversed;
+    }
+
     static double[] LoadData(string Name)
       {
-        string[] readText = File.ReadAllLines(@"D:\\Documents\\algos\\Algorithms-Assignment\\"+Name+".txt");
+        //@"D:\\Documents\\algos\\Algorithms-Assignment\\"+Name+".txt"
+        string[] readText = File.ReadAllLines(@"C:\Users\user\Desktop\Algorithms-Assignment\"+Name+".txt");
         double[] Numbers = Array.ConvertAll(readText, double.Parse);
         return Numbers;
       }
