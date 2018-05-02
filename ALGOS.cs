@@ -16,6 +16,8 @@ namespace ConsoleApplication1
       double[] Sorted = new double[Unsorted.Length];
       int orient = Orientation();
       int SortChoice = SortSelection();
+      int SearchChoice = SearchSelection();
+      double value = SearchItem();
 
       if (SortChoice == 0){
         Sorted = BubbleSort.Sort(Unsorted, Unsorted.Length);
@@ -32,6 +34,7 @@ namespace ConsoleApplication1
       else{
         System.Environment.Exit(1);
       }
+
       if (orient == 1)
       {
         PrintArrayReversed(Sorted);
@@ -41,11 +44,17 @@ namespace ConsoleApplication1
         PrintArray(Sorted);
       }
 
-      int SearchChoice = SearchSelection();
 
+      if (SearchChoice == 0){
+        Locations = LinearSearch.Search(Sorted);
+      }
+      if (SearchChoice == 1){
+        Locations = BinarySearch.Search(Sorted);
+      }
       if (SearchChoice == 2){
         System.Environment.Exit(1);
       }
+
     }
 
     static int SortSelection()
@@ -132,9 +141,25 @@ namespace ConsoleApplication1
           Console.WriteLine("Invalid selection, please try again");
           Console.WriteLine("Please select a number 1-3");
         }
-
       }
       return option-1;
+    }
+
+    static double SearchItem()
+    {
+      double item;
+      bool selected = false;
+      Console.WriteLine("What item would you like to search for?");
+      while (selected==false){
+        try{
+          item =  Convert.ToInt32(Console.ReadLine());
+          selected = true;
+        }
+        catch{
+          Console.WriteLine("Invalid selection, please try again");
+        }
+      }
+      return item;
     }
 
     static string DataSelection()
@@ -356,12 +381,49 @@ namespace ConsoleApplication1
 
       static class BinarySearch
       {
+        public static bool found = false;
+        public static int Count = 0;
+        Search(Array, value) {
+            list<int> loactions = new list<int>();
+            low = Array[0];
+            high = Array[(Array.Length-1)];
+            while (low <= high) {
+                mid = (low + high) / 2;
+                if (A[mid] > value)
+                {
+                    high = mid - 1;
+                }
+                else if (A[mid] < value)
+                {
+                  low = mid + 1;
+                }
 
+                else
+                {
+                  return Convert.ToString(mid);
+                }
+            }
+            return locations;
+        }
       }
 
       static class LinearSearch
       {
-
+        public static bool found = false;
+        public static int Count = 0;
+        Search(double[] Array, double value)
+        {
+          int i = 0;
+          list<int> loactions = new list<int>();
+          while (Array[i] <= value){
+            if (Array[i] == value){
+              locations.Add(i);
+              found = true;
+            }
+            i++;
+          }
+          return locations;
+        }
       }
 
   }
