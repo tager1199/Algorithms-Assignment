@@ -7,26 +7,134 @@ using System.IO;
 
 namespace ConsoleApplication1
 {
-
-  static class Assign
-  {
-    public static int QuickCount;
-    public static int HeapCount;
-  }
-
   class Program
   {
     static void Main(string[] args)
     {
       string Data = DataSelection();
       double[] Unsorted = LoadData(Data);
-      double[] Sorted = BubbleSort(Unsorted, Unsorted.Length);
-      InsertionSort(Unsorted, Unsorted.Length);
-      QuickSort(Unsorted, 0, Unsorted.Length-1);
-      Console.WriteLine("The number of steps for the quick sort was {0}",Assign.QuickCount);
-      HeapSort(Unsorted, Unsorted.Length);
-      Console.WriteLine("The number of steps for the heap sort was {0}",Assign.HeapCount);
-      double[] Decending = Reverse(Sorted, Sorted.Length);
+      double[] Sorted = new double[Unsorted.Length];
+      int orient = Orientation();
+      int SortChoice = SortSelection();
+
+      if (SortChoice == 0){
+        Sorted = BubbleSort.Sort(Unsorted, Unsorted.Length);
+      }
+      else if (SortChoice == 1){
+        Sorted = InsertionSort.Sort(Unsorted, Unsorted.Length);
+      }
+      else if (SortChoice == 2){
+        Sorted = QuickSort.Sort(Unsorted, 0, Unsorted.Length-1);
+      }
+      else if (SortChoice == 3){
+        Sorted = HeapSort.Sort(Unsorted, Unsorted.Length);
+      }
+      else{
+        System.Environment.Exit(1);
+      }
+      if (orient == 1)
+      {
+        PrintArrayReversed(Sorted);
+      }
+      else
+      {
+        PrintArray(Sorted);
+      }
+
+      int SearchChoice = SearchSelection();
+
+      if (SearchChoice == 2){
+        System.Environment.Exit(1);
+      }
+    }
+
+    static int SortSelection()
+    {
+      int option = 0;
+      bool selected = false;
+      Console.WriteLine("Which sorting algorithm would you like to use?");
+      Console.WriteLine("1. Bubble Sort");
+      Console.WriteLine("2. Insertion Sort");
+      Console.WriteLine("3. Quick Sort");
+      Console.WriteLine("4. Heap Sort");
+      Console.WriteLine("5. Quit");
+      while (selected==false){
+        try{
+          option = Convert.ToInt32(Console.ReadLine());
+
+          while (option > 5 || option < 1)
+          {
+            Console.WriteLine("Invalid selection, please try again");
+            Console.WriteLine("Please select a number 1-5");
+            option = Convert.ToInt32(Console.ReadLine());
+          }
+          selected = true;
+        }
+        catch{
+          Console.WriteLine("Invalid selection, please try again");
+          Console.WriteLine("Please select a number 1-5");
+        }
+
+      }
+      return option-1;
+    }
+
+    static int Orientation()
+    {
+      int option = 0;
+      bool selected = false;
+      Console.WriteLine("Would you like the list in accending or deccending order?");
+      Console.WriteLine("1. Accending");
+      Console.WriteLine("2. Deccenting");
+      Console.WriteLine("3. Quit");
+      while (selected==false){
+        try{
+          option =  Convert.ToInt32(Console.ReadLine());
+
+          while (option > 3 || option < 1)
+          {
+            Console.WriteLine("Invalid selection, please try again");
+            Console.WriteLine("Please select a number 1-3");
+            option = Convert.ToInt32(Console.ReadLine());
+          }
+          selected = true;
+        }
+        catch{
+          Console.WriteLine("Invalid selection, please try again");
+          Console.WriteLine("Please select a number 1-3");
+        }
+
+      }
+      return option-1;
+    }
+
+    static int SearchSelection()
+    {
+      int option = 0;
+      bool selected = false;
+      Console.WriteLine("Which sorting algorithm would you like to use?");
+      Console.WriteLine("1. Linear Search");
+      Console.WriteLine("2. Binary Search");
+      Console.WriteLine("3. Quit");
+      while (selected==false){
+        try{
+          option =  Convert.ToInt32(Console.ReadLine());
+
+          while (option > 3 || option < 1)
+          {
+            Console.WriteLine("Invalid selection, please try again");
+            Console.WriteLine("Please select a number 1-3");
+            option = Convert.ToInt32(Console.ReadLine());
+          }
+          selected = true;
+        }
+        catch{
+          Console.WriteLine("Invalid selection, please try again");
+          Console.WriteLine("Please select a number 1-3");
+        }
+
+      }
+      return option-1;
     }
 
     static string DataSelection()
@@ -82,33 +190,79 @@ namespace ConsoleApplication1
 
     static double[] LoadData(string Name)
       {
-        //@"D:\\Documents\\algos\\Algorithms-Assignment\\"+Name+".txt"
-        string[] readText = File.ReadAllLines(@"C:\Users\user\Desktop\Algorithms-Assignment\"+Name+".txt");
+        string file = "\\"+Name+".txt";
+        string dir = Directory.GetCurrentDirectory();
+        string[] readText = File.ReadAllLines(dir+file);
         double[] Numbers = Array.ConvertAll(readText, double.Parse);
         return Numbers;
       }
 
-      static double[] BubbleSort(double[] Unsorted, int Len)
-        {
-          double temp = 0;
-          int Count = 0;
-          for (int i = 0; i < Len; i++) {
-              for (int j = 0; j < Len - 1; j++) {
-                  Count++;
-                  if (Unsorted[j] > Unsorted[j + 1]) {
-                      Count++;
-                      temp = Unsorted[j + 1];
-                      Unsorted[j + 1] = Unsorted[j];
-                      Unsorted[j] = temp;
-                  }
-              }
-          }
-            PrintArray(Unsorted);
-            Console.WriteLine("The number of steps for the bubble sort was {0}",Count);
-            return Unsorted;
-        }
 
-        static void InsertionSort(double[] Unsorted, int Len)
+    static void PrintArray(double[] Array)
+      {
+        foreach(double i in Array){
+          Console.WriteLine(i);
+        }
+      }
+
+    static void PrintArrayReversed(double[] Array)
+      {
+        for(int i = Array.Length-1; i > -1; i--){
+          Console.WriteLine(Array[i]);
+        }
+      }
+
+      static class QuickSort
+      {
+        public static int Count = 0;
+        public static double[] Sort(double[] Unsorted, int left, int right)
+          {
+            int i = left, j = right;
+            double pivot = Unsorted[(left + right) / 2];
+
+            while (i <= j)
+            {
+                while (Unsorted[i].CompareTo(pivot) < 0)
+                {
+                    i++;
+                    Count++;
+                }
+
+                while (Unsorted[j].CompareTo(pivot) > 0)
+                {
+                    j--;
+                    Count++;
+                }
+
+                if (i <= j)
+                {
+                    // Swap
+                    double tmp = Unsorted[i];
+                    Unsorted[i] = Unsorted[j];
+                    Unsorted[j] = tmp;
+                    Count++;
+                    i++;
+                    j--;
+                }
+            }
+
+            // Recursive calls
+            if (left < j)
+            {
+                QuickSort.Sort(Unsorted, left, j);
+            }
+            if (i < right)
+            {
+                QuickSort.Sort(Unsorted, i, right);
+            }
+          return Unsorted;
+        }
+      }
+
+      static class InsertionSort
+      {
+        public static int Count = 0;
+        public static double[] Sort(double[] Unsorted, int Len)
           {
             int Count = 0;
             for (int i = 0; i < Len - 1; i++)
@@ -126,52 +280,36 @@ namespace ConsoleApplication1
                 }
             }
               Console.WriteLine("The number of steps for the insertion sort was {0}",Count);
+              return Unsorted;
           }
+      }
 
-          static void QuickSort(double[] Unsorted, int left, int right)
-            {
-              int i = left, j = right;
-              double pivot = Unsorted[(left + right) / 2];
-
-              while (i <= j)
-              {
-                  while (Unsorted[i].CompareTo(pivot) < 0)
-                  {
-                      i++;
-                      Assign.QuickCount++;
-                  }
-
-                  while (Unsorted[j].CompareTo(pivot) > 0)
-                  {
-                      j--;
-                      Assign.QuickCount++;
-                  }
-
-                  if (i <= j)
-                  {
-                      // Swap
-                      double tmp = Unsorted[i];
-                      Unsorted[i] = Unsorted[j];
-                      Unsorted[j] = tmp;
-                      Assign.QuickCount++;
-                      i++;
-                      j--;
-                  }
-              }
-
-              // Recursive calls
-              if (left < j)
-              {
-                  QuickSort(Unsorted, left, j);
-              }
-
-              if (i < right)
-              {
-                  QuickSort(Unsorted, i, right);
-              }
+      static class BubbleSort
+      {
+        public static int Count = 0;
+        public static double[] Sort(double[] Unsorted, int Len)
+          {
+            double temp = 0;
+            for (int i = 0; i < Len; i++) {
+                for (int j = 0; j < Len - 1; j++) {
+                    Count++;
+                    if (Unsorted[j] > Unsorted[j + 1]) {
+                        Count++;
+                        temp = Unsorted[j + 1];
+                        Unsorted[j + 1] = Unsorted[j];
+                        Unsorted[j] = temp;
+                    }
+                }
+            }
+              Console.WriteLine("The number of steps for the bubble sort was {0}",Count);
+              return Unsorted;
           }
+      }
 
-          static void HeapSort(double[] Unsorted, int heapSize)
+      static class HeapSort
+      {
+          public static int Count = 0;
+          public static double[] Sort(double[] Unsorted, int heapSize)
             {
               for (int p = (heapSize - 1) / 2; p >= 0; p--)
               {
@@ -184,10 +322,11 @@ namespace ConsoleApplication1
                   double temp = Unsorted[i];
                   Unsorted[i] = Unsorted[0];
                   Unsorted[0] = temp;
-                  Assign.HeapCount++;
+                  Count++;
                   heapSize--;
                   MaxHeapify(Unsorted, heapSize, 0);
               }
+              return Unsorted;
             }
 
           private static void MaxHeapify(double[] input, int heapSize, int index)
@@ -209,26 +348,21 @@ namespace ConsoleApplication1
                   double temp = input[index];
                   input[index] = input[largest];
                   input[largest] = temp;
-                  Assign.HeapCount++;
+                  Count++;
                   MaxHeapify(input, heapSize, largest);
               }
           }
+      }
 
+      static class BinarySearch
+      {
 
+      }
 
-          static void PrintArray(double[] Array)
-            {
-              foreach(double i in Array){
-                Console.WriteLine(i);
-              }
-            }
+      static class LinearSearch
+      {
 
-            static void PrintArrayReversed(double[] Array)
-              {
-                foreach(double i in Array){
-                  Console.WriteLine(i);
-                }
-              }
+      }
 
   }
 }
