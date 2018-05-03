@@ -44,17 +44,40 @@ namespace ConsoleApplication1
         PrintArray(Sorted);
       }
 
-
       if (SearchChoice == 0){
-        Locations = LinearSearch.Search(Sorted);
+        Console.WriteLine("Linear");
+        List<int> Locations = LinearSearch.Search(Sorted,value);
+        if (LinearSearch.Linearfound == false){
+          Console.WriteLine("The number was not found.");
+          Console.WriteLine("The closest number was:");
+        }
+        else{
+          Console.WriteLine("The number was found at these positions:");
+        }
+        foreach(int i in Locations){
+          Console.Write("{0} ",i);
+        }
+        Console.WriteLine();
       }
+
       if (SearchChoice == 1){
-        Locations = BinarySearch.Search(Sorted);
+        Console.WriteLine("Binary");
+        List<int> Locations = BinarySearch.Search(Sorted,value);
+        if (BinarySearch.Binaryfound == false){
+          Console.WriteLine("The number was not found.");
+          Console.WriteLine("The closest number was:");
+        }
+        else{
+          Console.WriteLine("The number was found at these positions:");
+        }
+        foreach(int i in Locations){
+          Console.Write("{0} ",i);
+        }
+        Console.WriteLine();
       }
       if (SearchChoice == 2){
         System.Environment.Exit(1);
       }
-
     }
 
     static int SortSelection()
@@ -147,12 +170,12 @@ namespace ConsoleApplication1
 
     static double SearchItem()
     {
-      double item;
+      double item=0;
       bool selected = false;
       Console.WriteLine("What item would you like to search for?");
       while (selected==false){
         try{
-          item =  Convert.ToInt32(Console.ReadLine());
+          item =  Convert.ToDouble(Console.ReadLine());
           selected = true;
         }
         catch{
@@ -381,46 +404,50 @@ namespace ConsoleApplication1
 
       static class BinarySearch
       {
-        public static bool found = false;
+        public static bool Binaryfound = false;
         public static int Count = 0;
-        Search(Array, value) {
-            list<int> loactions = new list<int>();
-            low = Array[0];
-            high = Array[(Array.Length-1)];
-            while (low <= high) {
-                mid = (low + high) / 2;
-                if (A[mid] > value)
-                {
-                    high = mid - 1;
-                }
-                else if (A[mid] < value)
-                {
-                  low = mid + 1;
-                }
-
-                else
-                {
-                  return Convert.ToString(mid);
-                }
+        public static List<int> Search(double[] Array, double value) {
+            List<int> locations = new List<int>();
+            int min = 0;
+            int max = (Array.Length);
+            while(max > min && BinarySearch.Binaryfound == false){
+              double mid = ((max+min)/2);
+              int guess = Convert.ToInt32(Math.Floor(mid));
+              if (Array[guess] == value) {
+                Console.WriteLine("FOUND");
+                locations.Add(guess+1);
+                BinarySearch.Binaryfound = true;
+              }
+              else if (Array[guess] > value){
+                max = guess -1;
+              }
+              else{
+                min = guess + 1;
+              }
             }
             return locations;
+          }
         }
-      }
 
       static class LinearSearch
       {
-        public static bool found = false;
+        public static bool Linearfound = false;
         public static int Count = 0;
-        Search(double[] Array, double value)
+        public static List<int> Search(double[] Array, double value)
         {
           int i = 0;
-          list<int> loactions = new list<int>();
+          List<int> locations = new List<int>();
           while (Array[i] <= value){
             if (Array[i] == value){
-              locations.Add(i);
-              found = true;
+              locations.Add(i+1);
+              LinearSearch.Linearfound = true;
             }
             i++;
+            Count++;
+          }
+          Count--;
+          if (!Array.Any()) {
+
           }
           return locations;
         }
