@@ -88,13 +88,14 @@ namespace ConsoleApplication1
         }
         else{
           Console.WriteLine("The number {0} was found at these positions:",value);
-        }
+
         foreach(int i in Locations){
           Console.Write("{0} ",i);
         }
         Console.WriteLine();
         Console.WriteLine("It took {0} steps to find the number.",BinarySearch.BinaryCount);
       }
+    }
       else{
         System.Environment.Exit(1);
       }
