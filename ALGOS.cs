@@ -332,15 +332,14 @@ namespace ConsoleApplication1
         public static int InsertionCount = 0;
         public static double[] Sort(double[] Unsorted, int Len)
           {
-            int Count = 0;
             for (int i = 0; i < Len - 1; i++)
             {
                 for (int j = i + 1; j > 0; j--)
                 {
-                    Count++;
+                    InsertionCount++;
                     if (Unsorted[j - 1] > Unsorted[j])
                     {
-                        Count++;
+                        InsertionCount++;
                         double temp = Unsorted[j - 1];
                         Unsorted[j - 1] = Unsorted[j];
                         Unsorted[j] = temp;
