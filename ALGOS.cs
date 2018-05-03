@@ -11,13 +11,17 @@ namespace ConsoleApplication1
   {
     static void Main(string[] args)
     {
+      //Get The choice from other method
       string Data = DataSelection();
+      //load array via other method
       double[] Unsorted = LoadData(Data);
+      //create the array for the sorted array for later
       double[] Sorted = new double[Unsorted.Length];
+      //get the values needed from the other methods
       int orient = Orientation();
       int SortChoice = SortSelection();
 
-
+      //call the correct sorting algorithm based on search
       if (SortChoice == 0){
         Sorted = BubbleSort.Sort(Unsorted, Unsorted.Length);
       }
@@ -31,9 +35,10 @@ namespace ConsoleApplication1
         Sorted = HeapSort.Sort(Unsorted, Unsorted.Length);
       }
       else{
+        //exit if they chose to
         System.Environment.Exit(1);
       }
-
+      //Print array either accending or deccending based on choice
       if (orient == 1)
       {
         PrintArrayReversed(Sorted);
@@ -42,6 +47,7 @@ namespace ConsoleApplication1
       {
         PrintArray(Sorted);
       }
+      //switch statement to print correct statement
       switch (SortChoice)
         {
           case 0:
@@ -57,38 +63,45 @@ namespace ConsoleApplication1
               Console.WriteLine("The number of steps for the heap sort was {0}",HeapSort.HeapCount);
               break;
         }
-
+      //get search algorithm choice from other method
       int SearchChoice = SearchSelection();
       double value = SearchItem();
+      //run everything for linear search
       if (SearchChoice == 0){
         List<int> Locations = LinearSearch.Search(Sorted,value);
+        //if the requested value isnt found
         if (LinearSearch.Linearfound == false){
           Console.WriteLine("The number {0} was not found.", value);
           Console.WriteLine("It took {0} steps to confirm the number was not present.",LinearSearch.LinearCount);
           Console.WriteLine("The closest number was:");
           Console.WriteLine("{0} at position {1}",LinearSearch.LinearNearest,Locations[0]);
         }
+        //if requested value is found
         else{
           Console.WriteLine("The number {0} was found at these positions:",value);
-        }
+
+        //print all locations value was found at
         foreach(int i in Locations){
           Console.Write("{0} ",i);
         }
         Console.WriteLine();
         Console.WriteLine("It took {0} steps to find the number.",LinearSearch.LinearCount);
       }
-
+    }
+      //run everything for binary search
       if (SearchChoice == 1){
         List<int> Locations = BinarySearch.Search(Sorted,value);
+        //if the requested value isnt found
         if (BinarySearch.Binaryfound == false){
           Console.WriteLine("The number {0} was not found.",value);
           Console.WriteLine("It took {0} steps to confirm the number was not present.",BinarySearch.BinaryCount);
           Console.WriteLine("The closest number was:");
           Console.WriteLine("{0} at position {1}",BinarySearch.BinaryNearest ,Locations[0]);
         }
+        //if requested value is found
         else{
           Console.WriteLine("The number {0} was found at these positions:",value);
-
+        //print all locations value was found at
         foreach(int i in Locations){
           Console.Write("{0} ",i);
         }
@@ -112,9 +125,10 @@ namespace ConsoleApplication1
       Console.WriteLine("4. Heap Sort");
       Console.WriteLine("5. Quit");
       while (selected==false){
+        //making sure an acceptable input is entered
         try{
           option = Convert.ToInt32(Console.ReadLine());
-
+          //make sure valid number is entered
           while (option > 5 || option < 1)
           {
             Console.WriteLine("Invalid selection, please try again");
@@ -123,6 +137,7 @@ namespace ConsoleApplication1
           }
           selected = true;
         }
+        //error message
         catch{
           Console.WriteLine("Invalid selection, please try again");
           Console.WriteLine("Please select a number 1-5");
@@ -136,14 +151,16 @@ namespace ConsoleApplication1
     {
       int option = 0;
       bool selected = false;
+      //print menu
       Console.WriteLine("Would you like the list in accending or deccending order?");
       Console.WriteLine("1. Accending");
       Console.WriteLine("2. Deccenting");
       Console.WriteLine("3. Quit");
+      //make sure valid number is entered
       while (selected==false){
         try{
           option =  Convert.ToInt32(Console.ReadLine());
-
+          //make sure number is a valid one
           while (option > 3 || option < 1)
           {
             Console.WriteLine("Invalid selection, please try again");
@@ -152,6 +169,7 @@ namespace ConsoleApplication1
           }
           selected = true;
         }
+        //printing error message
         catch{
           Console.WriteLine("Invalid selection, please try again");
           Console.WriteLine("Please select a number 1-3");
@@ -165,14 +183,16 @@ namespace ConsoleApplication1
     {
       int option = 0;
       bool selected = false;
+      //print menu
       Console.WriteLine("Which searching algorithm would you like to use?");
       Console.WriteLine("1. Linear Search");
       Console.WriteLine("2. Binary Search");
       Console.WriteLine("3. Quit");
+      //make sure valid number is entered
       while (selected==false){
         try{
           option =  Convert.ToInt32(Console.ReadLine());
-
+          //make sure number is a valid one
           while (option > 3 || option < 1)
           {
             Console.WriteLine("Invalid selection, please try again");
@@ -181,6 +201,7 @@ namespace ConsoleApplication1
           }
           selected = true;
         }
+        //print error message
         catch{
           Console.WriteLine("Invalid selection, please try again");
           Console.WriteLine("Please select a number 1-3");
@@ -194,11 +215,13 @@ namespace ConsoleApplication1
       double item=0;
       bool selected = false;
       Console.WriteLine("What item would you like to search for?");
+      //make sure valid value is entered
       while (selected==false){
         try{
           item =  Convert.ToDouble(Console.ReadLine());
           selected = true;
         }
+        //print error message
         catch{
           Console.WriteLine("Invalid selection, please try again");
         }
@@ -227,6 +250,7 @@ namespace ConsoleApplication1
 
       Console.WriteLine("Please select which file you would like to use:");
       int i = 1;
+      //print all options for menu
       foreach (string choice in Options)
       {
       	Console.WriteLine(Convert.ToString(i)+". "+choice);
@@ -237,9 +261,11 @@ namespace ConsoleApplication1
       int Selection = 0;
       while (selected == false)
       {
+        //error handling, make sure valid input is entered
       	try
       	{
       		Selection = Convert.ToInt32(Console.ReadLine());
+          //make sure number is between 1-15
       		while ( 1 > Selection || Selection > 15)
       		{
         		Console.WriteLine("Invalid Selection, please try again");
@@ -248,6 +274,7 @@ namespace ConsoleApplication1
       		}
       		selected = true;
       	}
+        //print error message
       	catch
       	{
       		Console.WriteLine("Invalid Selection, please try again");
@@ -259,16 +286,22 @@ namespace ConsoleApplication1
 
     static double[] LoadData(string Name)
       {
+        //load the data
         string file = "\\"+Name+".txt";
+        //use current director
         string dir = Directory.GetCurrentDirectory();
+        //read eachline into an array
         string[] readText = File.ReadAllLines(dir+file);
+        //convert all strings into doubles
         double[] Numbers = Array.ConvertAll(readText, double.Parse);
+        //return the array
         return Numbers;
       }
 
 
     static void PrintArray(double[] Array)
       {
+        //print all values in Array
         foreach(double i in Array){
           Console.WriteLine(i);
         }
@@ -276,6 +309,7 @@ namespace ConsoleApplication1
 
     static void PrintArrayReversed(double[] Array)
       {
+        //print all values in Array, backwards
         for(int i = Array.Length-1; i > -1; i--){
           Console.WriteLine(Array[i]);
         }
@@ -286,9 +320,10 @@ namespace ConsoleApplication1
         public static int QuickCount = 0;
         public static double[] Sort(double[] Unsorted, int left, int right)
           {
-            int i = left, j = right;
+            //define the intial variables
+            int i = left;
+            int j = right;
             double pivot = Unsorted[(left + right) / 2];
-
             while (i <= j)
             {
                 while (Unsorted[i].CompareTo(pivot) < 0)
@@ -305,7 +340,7 @@ namespace ConsoleApplication1
 
                 if (i <= j)
                 {
-                    // Swap
+                    //swap values
                     double tmp = Unsorted[i];
                     Unsorted[i] = Unsorted[j];
                     Unsorted[j] = tmp;
@@ -315,7 +350,7 @@ namespace ConsoleApplication1
                 }
             }
 
-            // Recursive calls
+            //recursive calls
             if (left < j)
             {
                 QuickSort.Sort(Unsorted, left, j);
@@ -324,6 +359,7 @@ namespace ConsoleApplication1
             {
                 QuickSort.Sort(Unsorted, i, right);
             }
+          //return sorted array
           return Unsorted;
         }
       }
@@ -333,21 +369,20 @@ namespace ConsoleApplication1
         public static int InsertionCount = 0;
         public static double[] Sort(double[] Unsorted, int Len)
           {
-            for (int i = 0; i < Len - 1; i++)
+            for (int i = 0; i < Unsorted.Length - 1; i++)
             {
                 for (int j = i + 1; j > 0; j--)
                 {
-                    InsertionCount++;
+                    //if the previous number is larger than the current
                     if (Unsorted[j - 1] > Unsorted[j])
                     {
-                        InsertionCount++;
                         double temp = Unsorted[j - 1];
                         Unsorted[j - 1] = Unsorted[j];
                         Unsorted[j] = temp;
                     }
-                }
+                  }
             }
-              return Unsorted;
+            return Unsorted;
           }
       }
 
@@ -357,10 +392,13 @@ namespace ConsoleApplication1
         public static double[] Sort(double[] Unsorted, int Len)
           {
             double temp = 0;
+            //looping iterations
             for (int i = 0; i < Len; i++) {
                 for (int j = 0; j < Len - 1; j++) {
                     BubbleCount++;
+                    //if the next number is less than the current
                     if (Unsorted[j] > Unsorted[j + 1]) {
+                        //swap numbers
                         BubbleCount++;
                         temp = Unsorted[j + 1];
                         Unsorted[j + 1] = Unsorted[j];
@@ -377,19 +415,23 @@ namespace ConsoleApplication1
           public static int HeapCount = 0;
           public static double[] Sort(double[] Unsorted, int heapSize)
             {
+              //iterations
               for (int p = (heapSize - 1) / 2; p >= 0; p--)
               {
+                //call other method
                 MaxHeapify(Unsorted, heapSize, p);
               }
-
+              //iterations
               for (int i = Unsorted.Length - 1; i > 0; i--)
               {
-                  //Swap
+                  //Swap numbers
                   double temp = Unsorted[i];
                   Unsorted[i] = Unsorted[0];
                   Unsorted[0] = temp;
+                  //increase count, decrease heapsize
                   HeapCount++;
                   heapSize--;
+                  //call other method
                   MaxHeapify(Unsorted, heapSize, 0);
               }
               return Unsorted;
@@ -401,20 +443,25 @@ namespace ConsoleApplication1
               int right = (index + 1) * 2;
               int largest = 0;
 
-              if (left < heapSize && input[left] > input[index])
+              if (left < heapSize && input[left] > input[index]){
                   largest = left;
-              else
+                }
+              else{
                   largest = index;
+                }
 
-              if (right < heapSize && input[right] > input[largest])
-                  largest = right;
+              if (right < heapSize && input[right] > input[largest]){
+                largest = right;
+              }
 
+              //iterations
               if (largest != index)
               {
                   double temp = input[index];
                   input[index] = input[largest];
                   input[largest] = temp;
                   HeapCount++;
+                  //call own method
                   MaxHeapify(input, heapSize, largest);
               }
           }
@@ -429,31 +476,39 @@ namespace ConsoleApplication1
             List<int> locations = new List<int>();
             int min = 0;
             int max = (Array.Length);
+            //while a number hasnt been found and all values not searched
             while(max >= min && Binaryfound == false){
               BinaryCount++;
               double mid = ((max+min)/2);
               int guess = Convert.ToInt32(Math.Floor(mid));
+              //if value found
               if(Array[guess] == value) {
                 locations.Add(guess+1);
                 int a = guess+1;
                 int b = guess-1;
+                //while value found search values above it to check for multiple values
                 while(Array[a] == value) {
                   locations.Add(a+1);
                   a++;
                 }
+                //while value found search values below it to check for multiple values
                 while(Array[b] == value) {
                   locations.Add(b+1);
                   b--;
                 }
+                //set found to true, escape loop
                 Binaryfound = true;
               }
+              //if guess is greater than value, decrease max
               else if (Array[guess] > value){
                 max = guess -1;
               }
+              //if guess is less than value, increase max
               else{
                 min = guess + 1;
               }
             }
+            //if no items found find closest value
             if (locations.Count==0){
                 if (min==Array.Length-1){
                   min--;
@@ -461,11 +516,13 @@ namespace ConsoleApplication1
                 if (min==0){
                   min++;
                 }
+                //search up and down of current value
                 int a = min-1;
                 int b = min+1;
                 double aDiff = Math.Abs(value - Array[a]);
                 double iDiff = Math.Abs(value - Array[min]);
                 double bDiff = Math.Abs(value - Array[b]);
+                //work out which value is closest
                 if (aDiff < iDiff && aDiff < bDiff){
                   BinaryNearest = Array[a];
                   locations.Add(a+1);
@@ -493,6 +550,7 @@ namespace ConsoleApplication1
         {
           int i = 0;
           List<int> locations = new List<int>();
+          //search all values in array until go past value
           while (i < Array.Length && Array[i] <= value){
             if (Array[i] == value){
               locations.Add(i+1);
@@ -504,7 +562,7 @@ namespace ConsoleApplication1
             }
           }
           LinearCount++;
-
+          //if not found find closest value
           if (locations.Count==0){
               if (i==Array.Length-1){
                 i--;
