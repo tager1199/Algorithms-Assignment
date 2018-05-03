@@ -50,9 +50,10 @@ namespace ConsoleApplication1
         if (LinearSearch.Linearfound == false){
           Console.WriteLine("The number was not found.");
           Console.WriteLine("The closest number was:");
+          Console.WriteLine("{0} at position {1}",LinearSearch.LinearNearest,Locations[0]);
         }
         else{
-          Console.WriteLine("The number was found at these positions:");
+          Console.WriteLine("The number {0} was found at these positions:",value);
         }
         foreach(int i in Locations){
           Console.Write("{0} ",i);
@@ -64,11 +65,12 @@ namespace ConsoleApplication1
         Console.WriteLine("Binary");
         List<int> Locations = BinarySearch.Search(Sorted,value);
         if (BinarySearch.Binaryfound == false){
-          Console.WriteLine("The number was not found.");
+          Console.WriteLine("The number {0} was not found.",value);
           Console.WriteLine("The closest number was:");
+          //Console.WriteLine("{0} at position {1}",BinarySearch.BinaryNearest ,Locations[0]);
         }
         else{
-          Console.WriteLine("The number was found at these positions:");
+          Console.WriteLine("The number {0} was found at these positions:",value);
         }
         foreach(int i in Locations){
           Console.Write("{0} ",i);
@@ -410,13 +412,13 @@ namespace ConsoleApplication1
             List<int> locations = new List<int>();
             int min = 0;
             int max = (Array.Length);
-            while(max > min && BinarySearch.Binaryfound == false){
+            while(max > min && Binaryfound == false){
               double mid = ((max+min)/2);
               int guess = Convert.ToInt32(Math.Floor(mid));
               if (Array[guess] == value) {
                 Console.WriteLine("FOUND");
                 locations.Add(guess+1);
-                BinarySearch.Binaryfound = true;
+                Binaryfound = true;
               }
               else if (Array[guess] > value){
                 max = guess -1;
@@ -432,22 +434,50 @@ namespace ConsoleApplication1
       static class LinearSearch
       {
         public static bool Linearfound = false;
-        public static int Count = 0;
+        public static int LinearCount = 0;
+        public static double LinearNearest;
         public static List<int> Search(double[] Array, double value)
         {
           int i = 0;
           List<int> locations = new List<int>();
-          while (Array[i] <= value){
+          while (i < Array.Length && Array[i] <= value){
             if (Array[i] == value){
               locations.Add(i+1);
-              LinearSearch.Linearfound = true;
+              Linearfound = true;
             }
             i++;
-            Count++;
+            LinearCount++;
           }
-          Count--;
-          if (!Array.Any()) {
-
+          LinearCount--;
+          if (locations.Count==0){
+            if (Array[Array.Length-1] < value){
+              LinearNearest = Array[Array.Length-1];
+            }
+            else if (Array[0] > value){
+              LinearNearest = Array[0];
+            }
+            else{
+              int a = i-1;
+              int b = i+1;
+              double aDiff = Math.Abs(value - Array[a]);
+              double iDiff = Math.Abs(value - Array[i]);
+              double bDiff = Math.Abs(value - Array[b]);
+              Console.WriteLine(a);
+              Console.WriteLine(i);
+              Console.WriteLine(b);
+              if (aDiff < iDiff && aDiff < bDiff){
+                LinearNearest = Array[a];
+                locations.Add(a);
+              }
+              else if (iDiff < aDiff && iDiff < bDiff){
+                LinearNearest = Array[i];
+                locations.Add(i);
+              }
+              else{
+                LinearNearest = Array[b];
+                locations.Add(b);
+              }
+            }
           }
           return locations;
         }
