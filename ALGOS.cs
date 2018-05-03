@@ -16,8 +16,7 @@ namespace ConsoleApplication1
       double[] Sorted = new double[Unsorted.Length];
       int orient = Orientation();
       int SortChoice = SortSelection();
-      int SearchChoice = SearchSelection();
-      double value = SearchItem();
+
 
       if (SortChoice == 0){
         Sorted = BubbleSort.Sort(Unsorted, Unsorted.Length);
@@ -43,12 +42,30 @@ namespace ConsoleApplication1
       {
         PrintArray(Sorted);
       }
+      switch (SortChoice)
+        {
+          case 0:
+              Console.WriteLine("The number of steps for the bubble sort was {0}",BubbleSort.BubbleCount);
+              break;
+          case 1:
+              Console.WriteLine("The number of steps for the insertion sort was {0}",InsertionSort.InsertionCount);
+              break;
+          case 2:
+              Console.WriteLine("The number of steps for the quick sort was {0}",QuickSort.QuickCount);
+              break;
+          case 3:
+              Console.WriteLine("The number of steps for the heap sort was {0}",HeapSort.HeapCount);
+              break;
+        }
 
+      int SearchChoice = SearchSelection();
+      double value = SearchItem();
       if (SearchChoice == 0){
         Console.WriteLine("Linear");
         List<int> Locations = LinearSearch.Search(Sorted,value);
         if (LinearSearch.Linearfound == false){
-          Console.WriteLine("The number was not found.");
+          Console.WriteLine("The number {0} was not found.", value);
+          Console.WriteLine("It took {0} steps to confirm the number was not present.",LinearSearch.LinearCount);
           Console.WriteLine("The closest number was:");
           Console.WriteLine("{0} at position {1}",LinearSearch.LinearNearest,Locations[0]);
         }
@@ -59,6 +76,7 @@ namespace ConsoleApplication1
           Console.Write("{0} ",i);
         }
         Console.WriteLine();
+        Console.WriteLine("It took {0} steps to find the number.",LinearSearch.LinearCount);
       }
 
       if (SearchChoice == 1){
@@ -66,6 +84,7 @@ namespace ConsoleApplication1
         List<int> Locations = BinarySearch.Search(Sorted,value);
         if (BinarySearch.Binaryfound == false){
           Console.WriteLine("The number {0} was not found.",value);
+          Console.WriteLine("It took {0} steps to confirm the number was not present.",BinarySearch.BinaryCount);
           Console.WriteLine("The closest number was:");
           //Console.WriteLine("{0} at position {1}",BinarySearch.BinaryNearest ,Locations[0]);
         }
@@ -76,8 +95,9 @@ namespace ConsoleApplication1
           Console.Write("{0} ",i);
         }
         Console.WriteLine();
+        Console.WriteLine("It took {0} steps to find the number.",BinarySearch.BinaryCount);
       }
-      if (SearchChoice == 2){
+      else{
         System.Environment.Exit(1);
       }
     }
@@ -146,7 +166,7 @@ namespace ConsoleApplication1
     {
       int option = 0;
       bool selected = false;
-      Console.WriteLine("Which sorting algorithm would you like to use?");
+      Console.WriteLine("Which searching algorithm would you like to use?");
       Console.WriteLine("1. Linear Search");
       Console.WriteLine("2. Binary Search");
       Console.WriteLine("3. Quit");
@@ -264,7 +284,7 @@ namespace ConsoleApplication1
 
       static class QuickSort
       {
-        public static int Count = 0;
+        public static int QuickCount = 0;
         public static double[] Sort(double[] Unsorted, int left, int right)
           {
             int i = left, j = right;
@@ -275,13 +295,13 @@ namespace ConsoleApplication1
                 while (Unsorted[i].CompareTo(pivot) < 0)
                 {
                     i++;
-                    Count++;
+                    QuickCount++;
                 }
 
                 while (Unsorted[j].CompareTo(pivot) > 0)
                 {
                     j--;
-                    Count++;
+                    QuickCount++;
                 }
 
                 if (i <= j)
@@ -290,7 +310,7 @@ namespace ConsoleApplication1
                     double tmp = Unsorted[i];
                     Unsorted[i] = Unsorted[j];
                     Unsorted[j] = tmp;
-                    Count++;
+                    QuickCount++;
                     i++;
                     j--;
                 }
@@ -311,7 +331,7 @@ namespace ConsoleApplication1
 
       static class InsertionSort
       {
-        public static int Count = 0;
+        public static int InsertionCount = 0;
         public static double[] Sort(double[] Unsorted, int Len)
           {
             int Count = 0;
@@ -329,36 +349,34 @@ namespace ConsoleApplication1
                     }
                 }
             }
-              Console.WriteLine("The number of steps for the insertion sort was {0}",Count);
               return Unsorted;
           }
       }
 
       static class BubbleSort
       {
-        public static int Count = 0;
+        public static int BubbleCount = 0;
         public static double[] Sort(double[] Unsorted, int Len)
           {
             double temp = 0;
             for (int i = 0; i < Len; i++) {
                 for (int j = 0; j < Len - 1; j++) {
-                    Count++;
+                    BubbleCount++;
                     if (Unsorted[j] > Unsorted[j + 1]) {
-                        Count++;
+                        BubbleCount++;
                         temp = Unsorted[j + 1];
                         Unsorted[j + 1] = Unsorted[j];
                         Unsorted[j] = temp;
                     }
                 }
             }
-              Console.WriteLine("The number of steps for the bubble sort was {0}",Count);
               return Unsorted;
           }
       }
 
       static class HeapSort
       {
-          public static int Count = 0;
+          public static int HeapCount = 0;
           public static double[] Sort(double[] Unsorted, int heapSize)
             {
               for (int p = (heapSize - 1) / 2; p >= 0; p--)
@@ -372,7 +390,7 @@ namespace ConsoleApplication1
                   double temp = Unsorted[i];
                   Unsorted[i] = Unsorted[0];
                   Unsorted[0] = temp;
-                  Count++;
+                  HeapCount++;
                   heapSize--;
                   MaxHeapify(Unsorted, heapSize, 0);
               }
@@ -398,7 +416,7 @@ namespace ConsoleApplication1
                   double temp = input[index];
                   input[index] = input[largest];
                   input[largest] = temp;
-                  Count++;
+                  HeapCount++;
                   MaxHeapify(input, heapSize, largest);
               }
           }
@@ -407,17 +425,27 @@ namespace ConsoleApplication1
       static class BinarySearch
       {
         public static bool Binaryfound = false;
-        public static int Count = 0;
+        public static int BinaryCount = 0;
         public static List<int> Search(double[] Array, double value) {
             List<int> locations = new List<int>();
             int min = 0;
             int max = (Array.Length);
             while(max > min && Binaryfound == false){
+              BinaryCount++;
               double mid = ((max+min)/2);
               int guess = Convert.ToInt32(Math.Floor(mid));
-              if (Array[guess] == value) {
-                Console.WriteLine("FOUND");
+              if(Array[guess] == value) {
                 locations.Add(guess+1);
+                int a = guess+1;
+                int b = guess-1;
+                while(Array[a] == value) {
+                  locations.Add(a+1);
+                  a++;
+                }
+                while(Array[b] == value) {
+                  locations.Add(b+1);
+                  b--;
+                }
                 Binaryfound = true;
               }
               else if (Array[guess] > value){
@@ -446,38 +474,37 @@ namespace ConsoleApplication1
               Linearfound = true;
             }
             i++;
-            LinearCount++;
+            if(Linearfound==false){
+              LinearCount++;
+            }
           }
-          LinearCount--;
+          LinearCount++;
+
           if (locations.Count==0){
-            if (Array[Array.Length-1] < value){
-              LinearNearest = Array[Array.Length-1];
-            }
-            else if (Array[0] > value){
-              LinearNearest = Array[0];
-            }
-            else{
+              if (i==Array.Length-1){
+                i--;
+              }
+              if (i==0){
+                i++;
+              }
               int a = i-1;
               int b = i+1;
               double aDiff = Math.Abs(value - Array[a]);
               double iDiff = Math.Abs(value - Array[i]);
               double bDiff = Math.Abs(value - Array[b]);
-              Console.WriteLine(a);
-              Console.WriteLine(i);
-              Console.WriteLine(b);
               if (aDiff < iDiff && aDiff < bDiff){
                 LinearNearest = Array[a];
-                locations.Add(a);
+                locations.Add(a+1);
               }
               else if (iDiff < aDiff && iDiff < bDiff){
                 LinearNearest = Array[i];
-                locations.Add(i);
+                locations.Add(i+1);
               }
               else{
                 LinearNearest = Array[b];
-                locations.Add(b);
+                locations.Add(b+1);
               }
-            }
+
           }
           return locations;
         }
