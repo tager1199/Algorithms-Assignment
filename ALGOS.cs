@@ -61,7 +61,6 @@ namespace ConsoleApplication1
       int SearchChoice = SearchSelection();
       double value = SearchItem();
       if (SearchChoice == 0){
-        Console.WriteLine("Linear");
         List<int> Locations = LinearSearch.Search(Sorted,value);
         if (LinearSearch.Linearfound == false){
           Console.WriteLine("The number {0} was not found.", value);
@@ -80,13 +79,12 @@ namespace ConsoleApplication1
       }
 
       if (SearchChoice == 1){
-        Console.WriteLine("Binary");
         List<int> Locations = BinarySearch.Search(Sorted,value);
         if (BinarySearch.Binaryfound == false){
           Console.WriteLine("The number {0} was not found.",value);
           Console.WriteLine("It took {0} steps to confirm the number was not present.",BinarySearch.BinaryCount);
           Console.WriteLine("The closest number was:");
-          //Console.WriteLine("{0} at position {1}",BinarySearch.BinaryNearest ,Locations[0]);
+          Console.WriteLine("{0} at position {1}",BinarySearch.BinaryNearest ,Locations[0]);
         }
         else{
           Console.WriteLine("The number {0} was found at these positions:",value);
@@ -426,11 +424,12 @@ namespace ConsoleApplication1
       {
         public static bool Binaryfound = false;
         public static int BinaryCount = 0;
+        public static double BinaryNearest;
         public static List<int> Search(double[] Array, double value) {
             List<int> locations = new List<int>();
             int min = 0;
             int max = (Array.Length);
-            while(max > min && Binaryfound == false){
+            while(max >= min && Binaryfound == false){
               BinaryCount++;
               double mid = ((max+min)/2);
               int guess = Convert.ToInt32(Math.Floor(mid));
@@ -454,6 +453,32 @@ namespace ConsoleApplication1
               else{
                 min = guess + 1;
               }
+            }
+            if (locations.Count==0){
+                if (min==Array.Length-1){
+                  min--;
+                }
+                if (min==0){
+                  min++;
+                }
+                int a = min-1;
+                int b = min+1;
+                double aDiff = Math.Abs(value - Array[a]);
+                double iDiff = Math.Abs(value - Array[min]);
+                double bDiff = Math.Abs(value - Array[b]);
+                if (aDiff < iDiff && aDiff < bDiff){
+                  BinaryNearest = Array[a];
+                  locations.Add(a+1);
+                }
+                else if (iDiff < aDiff && iDiff < bDiff){
+                  BinaryNearest = Array[min];
+                  locations.Add(min+1);
+                }
+                else{
+                  BinaryNearest = Array[b];
+                  locations.Add(b+1);
+                }
+
             }
             return locations;
           }
